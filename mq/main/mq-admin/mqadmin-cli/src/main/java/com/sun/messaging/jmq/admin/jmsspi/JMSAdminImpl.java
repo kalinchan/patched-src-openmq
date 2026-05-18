@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
@@ -625,7 +626,7 @@ public class JMSAdminImpl implements JMSAdmin, ExceptionListener {
         if (!argsOnly) {
             String iMQBrokerPath;
 
-            if (java.io.File.separator.equals("\\")) {
+            if (isWindows()) {
                 // Windows path
                 // <iMQHome>\\imqbrokersvc.exe -console
                 iMQBrokerPath = iMQHome + java.io.File.separator + "imqbrokersvc.exe";
@@ -916,7 +917,7 @@ public class JMSAdminImpl implements JMSAdmin, ExceptionListener {
         int exitCode = 0;
         boolean interrupted = false;
 
-        if (java.io.File.separator.equals("\\")) {
+        if (isWindows()) {
             // Windows path
             // <mqBinDir>\\bin\\imqbrokerd.exe
             iMQBrokerPath = mqBinDir + java.io.File.separator + "imqbrokerd.exe";
@@ -1016,7 +1017,7 @@ public class JMSAdminImpl implements JMSAdmin, ExceptionListener {
         int exitCode = 0;
         boolean interrupted = false;
 
-        if (java.io.File.separator.equals("\\")) {
+        if (isWindows()) {
             // Windows path
             // <mqBinDir>\\bin\\imqbrokerd.exe
             iMQBrokerPath = mqBinDir + java.io.File.separator + "imqbrokerd.exe";
@@ -1337,6 +1338,10 @@ public class JMSAdminImpl implements JMSAdmin, ExceptionListener {
                 logger.log(ERROR, ioe.getMessage(), ioe);
             }
         }
+    }
+
+    private static boolean isWindows() {
+        return System.getProperty("os.name").toLowerCase(Locale.ROOT).startsWith("windows");
     }
 
 }
